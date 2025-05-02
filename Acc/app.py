@@ -48,7 +48,7 @@ if submitted:
         if txn_type == "Paid":
             debit = 0 if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else amount
             credit = amount if debit == 0 else 0
-        else:  # Received
+        else:
             debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else 0
             credit = 0 if debit else amount
 
@@ -65,6 +65,7 @@ if submitted:
         st.session_state.ledger.loc[len(st.session_state.ledger)] = new_row
         st.success("Transaction added!")
 
+        #
         data = {
             "date": str(date),
             "description": description,
