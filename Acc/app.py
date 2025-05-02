@@ -41,6 +41,9 @@ with st.form("entry_form"):
 
 # Logic
 if submitted:
+    debit = 0
+    credit = 0
+    
     if txn_type == "Paid":
         debit = 0 if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else amount
         credit = amount if debit == 0 else 0
