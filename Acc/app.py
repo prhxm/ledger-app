@@ -58,7 +58,8 @@ def run_ledger_app():
             "credit": float(credit),
             "user_id": st.session_state.user.user.id
         }
-
+        st.write("Current user_id from session:", st.session_state.user.user.id)
+        
         required_fields = ["date", "amount", "transaction_type", "account"]
         missing_fields = [k for k in required_fields if data.get(k) in [None, "", 0]]
 
