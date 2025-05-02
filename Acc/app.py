@@ -41,28 +41,32 @@ with st.form("entry_form"):
 
 # Logic
 if submitted:
-    debit = 0
-    credit = 0
-    
-    if txn_type == "Paid":
-        debit = 0 if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else amount
-        credit = amount if debit == 0 else 0
-    else:  # Received
-        debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else 0
-        credit = 0 if debit else amount
+    if amount > 0 and txn_type in ["Paid", "Received"] and account:
+        debit = 0
+        credit = 0
 
-    new_row = {
-        "Date": date,
-        "Description": description,
-        "Amount": amount,
-        "Transaction Type": txn_type,
-        "Account": account,
-        "Debit": debit,
-        "Credit": credit
-    }
+        if txn_type == "Paid":
+            debit = 0 if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else amount
+            credit = amount if debit == 0 else 0
+        else:  # Received
+            debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else 0
+            credit = 0 if debit else amount
 
-    st.session_state.ledger.loc[len(st.session_state.ledger)] = new_row
-    st.success("Transaction added!")
+        new_row = {
+            "Date": date,
+            "Description": description,
+            "Amount": amount,
+            "Transaction Type": txn_type,
+            "Account": account,
+            "Debit": debit,
+            "Credit": credit
+        }
+
+        st.session_state.ledger.loc[len(st.session_state.ledger)] = new_row
+        st.success("Transaction added!")
+
+    else:
+        st.error("Please fill out all fields and enter a valid amount greater than 0.")
 # Send to Supabase
 data = {
     "date": str(date),
