@@ -1,5 +1,15 @@
 import streamlit as st
 import pandas as pd
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+url = os.getenv("SUPABASE_URL")
+key = os.getenv("SUPABASE_KEY")
+
+supabase: Client = create_client(url, key)
+
 
 st.title("📒 Simple Ledger App")
 
@@ -49,6 +59,18 @@ if submitted:
 
     st.session_state.ledger.loc[len(st.session_state.ledger)] = new_row
     st.success("Transaction added!")
+# Send to Supabase
+data = {
+    "date": str(date),
+    "description": description,
+    "amount": amount,
+    "transaction_type": txn_type,
+    "account": account,
+    "debit": debit,
+    "credit": credit
+}
+
+supabase.table("transactions").insert(data).execute()
 # -----------------------
 # Trial Balance Check
 # -----------------------
