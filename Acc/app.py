@@ -65,6 +65,18 @@ if submitted:
         st.session_state.ledger.loc[len(st.session_state.ledger)] = new_row
         st.success("Transaction added!")
 
+        
+        data = {
+            "date": str(date),
+            "description": description,
+            "amount": amount,
+            "transaction_type": txn_type,
+            "account": account,
+            "debit": debit,
+            "credit": credit
+        }
+        supabase.table("transactions").insert(data).execute()
+
     else:
         st.error("Please fill out all fields and enter a valid amount greater than 0.")
 # Send to Supabase
