@@ -65,7 +65,6 @@ if submitted:
         st.session_state.ledger.loc[len(st.session_state.ledger)] = new_row
         st.success("Transaction added!")
 
-        
         data = {
             "date": str(date),
             "description": description,
@@ -172,7 +171,7 @@ if not st.session_state.ledger.empty:
             save_edit = st.form_submit_button("Save Changes")
         
         if save_edit:
-            # تعیین دوباره Debit و Credit
+            # Debit  Credit
             if new_type == "Paid":
                 if new_account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"]:
                     debit = 0
