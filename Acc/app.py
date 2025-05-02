@@ -55,7 +55,7 @@ def run_ledger_app():
             "account": account,
             "debit": float(debit),
             "credit": float(credit),
-            "email": st.session_state.user.user.email
+            "user_id": st.session_state.user.user.id  # Link with auth.uid()
         }
 
         required_fields = ["date", "amount", "transaction_type", "account"]
@@ -65,13 +65,16 @@ def run_ledger_app():
             st.warning(f"⚠️ Please fill out all required fields: {', '.join(missing_fields)}")
         else:
             try:
-                supabase.table("transactions").insert(data, {"returning": "minimal"}).execute()
+                supabase.table("transactions").insert(data).execute()
                 st.success("✅ Transaction successfully saved in Supabase.")
-            except:
-                st.warning("⚠️ Something went wrong while saving the transaction. Please try again.")
+            except Exception as e:
+                st.warning(f"⚠️ Something went wrong while saving the transaction: {e}")
 
     try:
-        response = supabase.table("transactions").select("*").eq("email", st.session_state.user.user.email).execute()
+        response = supabase.table("transactions") \
+            .select("*") \
+            .eq("user_id", st.session_state.user.user.id) \
+            .execute()
     except:
         response = None
 
@@ -108,14 +111,14 @@ if st.button(auth_mode):
             user = supabase.auth.sign_in_with_password({"email": email, "password": password})
             st.session_state.user = user
             st.success("✅ Logged in successfully.")
-        except:
-            st.error("❌ Login failed. Please check your credentials or try again later.")
+        except Exception as e:
+            st.error(f"❌ Login failed: {e}")
     else:
         try:
             user = supabase.auth.sign_up({"email": email, "password": password})
             st.success("✅ Signed up successfully. Please check your email.")
-        except:
-            st.error("❌ Sign-up failed. This email may already be registered.")
+        except Exception as e:
+            st.error(f"❌ Sign-up failed: {e}")
 
 # ===================== Run App =====================
 if "user" in st.session_state:
