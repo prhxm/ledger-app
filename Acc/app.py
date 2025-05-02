@@ -14,12 +14,6 @@ supabase: Client = create_client(url, key)
 def run_ledger_app():
     st.title("📒 Simple Ledger App")
 
-    if "ledger" not in st.session_state:
-        st.session_state.ledger = pd.DataFrame(columns=[
-            "Date", "Description", "Amount", "Transaction Type",
-            "Account", "Debit", "Credit"
-        ])
-
     accounts = [
         "Cash", "Accounts Receivable", "Inventory", "Equipment",
         "Accounts Payable", "Unearned Revenue", "Common Stock", "Retained Earnings",
@@ -44,7 +38,7 @@ def run_ledger_app():
         if txn_type == "Paid":
             debit = 0 if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else amount
             credit = amount if debit == 0 else 0
-        else:  # Received
+        else:
             debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else 0
             credit = 0 if debit else amount
 
@@ -56,11 +50,11 @@ def run_ledger_app():
             "account": account,
             "debit": float(debit),
             "credit": float(credit),
-            "email": st.session_state.user.user.email  # Track user-specific data
+            "email": st.session_state.user.user.email
         }
 
-        # Validate only user-input fields
-        required_fields = ["date", "description", "amount", "transaction_type", "account"]
+        # Validate user-input fields only
+        required_fields = ["date", "amount", "transaction_type", "account"]
         missing_fields = [k for k in required_fields if data.get(k) in [None, "", 0]]
 
         if missing_fields:
@@ -72,7 +66,7 @@ def run_ledger_app():
             except:
                 st.warning("⚠️ Something went wrong while saving the transaction. Please try again.")
 
-    # Load transactions for this user
+    # Load user-specific data
     try:
         response = supabase.table("transactions") \
             .select("*") \
