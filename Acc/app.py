@@ -47,7 +47,7 @@ def run_ledger_app():
             debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else 0
             credit = 0 if debit else amount
 
-        data = {
+        dataa = {
             "date": str(date),
             "description": description.strip(),
             "amount": float(amount),
@@ -59,7 +59,7 @@ def run_ledger_app():
         }
 
         required_fields = ["date", "amount", "transaction_type", "account"]
-        missing_fields = [k for k in required_fields if data.get(k) in [None, "", 0]]
+        missing_fields = [k for k in required_fields if dataa.get(k) in [None, "", 0]]
 
         if missing_fields:
             st.warning(f"⚠️ Please fill out all required fields: {', '.join(missing_fields)}")
