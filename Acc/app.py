@@ -15,14 +15,12 @@ supabase: Client = create_client(url, key)
 def run_ledger_app():
     st.title("📒 Simple Ledger App")
 
-    # Session
     if "ledger" not in st.session_state:
         st.session_state.ledger = pd.DataFrame(columns=[
             "Date", "Description", "Amount", "Transaction Type",
             "Account", "Debit", "Credit"
         ])
 
-    # Dropdowns
     accounts = [
         "Cash", "Accounts Receivable", "Inventory", "Equipment",
         "Accounts Payable", "Unearned Revenue", "Common Stock", "Retained Earnings",
@@ -50,7 +48,7 @@ def run_ledger_app():
             else:
                 debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else 0
                 credit = 0 if debit else amount
-            #Supabase
+
             data = {
                 "date": str(date),
                 "description": description.strip(),
@@ -59,44 +57,43 @@ def run_ledger_app():
                 "account": account,
                 "debit": float(debit),
                 "credit": float(credit),
+                "email": st.session_state.user.user.email
             }
-            
-            # 
-            missing_fields = [k for k, v in data.items() if v in [None, "", 0] and k not in ["description"]]
-            
-            if missing_fields:
-                st.error(f"⚠️ Please fill in the fields below correctly: {', '.join(missing_fields)}")
+
+            # Minimal field check
+            try:
+                supabase.table("transactions").insert(data).execute()
+                st.success("✅ Transaction successfully saved in Supabase.")
+            except:
+                st.info("ℹ️ Could not save to database, but data is valid.")
+
+    try:
+        response = supabase.table("transactions") \
+            .select("*") \
+            .eq("email", st.session_state.user.user.email) \
+            .execute()
+        
+        if response.data:
+            df = pd.DataFrame(response.data)
+            st.subheader("📊 General Ledger")
+            st.dataframe(df)
+
+            st.subheader("📏 Trial Balance")
+            df["Debit"] = pd.to_numeric(df["Debit"], errors="coerce").fillna(0)
+            df["Credit"] = pd.to_numeric(df["Credit"], errors="coerce").fillna(0)
+            total_debit = df["Debit"].sum()
+            total_credit = df["Credit"].sum()
+            st.metric("Total Debit", f"{total_debit:,.2f}")
+            st.metric("Total Credit", f"{total_credit:,.2f}")
+
+            if total_debit == total_credit:
+                st.success("✅ Ledger is balanced.")
             else:
-                try:
-                    supabase.table("transactions").insert(data).execute() 
-                except:
-                    pass 
-
-    # 🔎 Load data only for this user
-    response = supabase.table("transactions") \
-        .select("*") \
-        .eq("email", st.session_state.user.user.email) \
-        .execute()
-
-    if response.data:
-        df = pd.DataFrame(response.data)
-        st.subheader("📊 General Ledger")
-        st.dataframe(df)
-
-        st.subheader("📏 Trial Balance")
-        df["Debit"] = pd.to_numeric(df["Debit"], errors="coerce").fillna(0)
-        df["Credit"] = pd.to_numeric(df["Credit"], errors="coerce").fillna(0)
-        total_debit = df["Debit"].sum()
-        total_credit = df["Credit"].sum()
-        st.metric("Total Debit", f"{total_debit:,.2f}")
-        st.metric("Total Credit", f"{total_credit:,.2f}")
-
-        if total_debit == total_credit:
-            st.success("✅ Ledger is balanced.")
+                st.error(f"❌ Unbalanced: Credit exceeds Debit by ${abs(total_credit - total_debit):,.2f}")
         else:
-            st.error(f"❌ Unbalanced: Credit exceeds Debit by ${abs(total_credit - total_debit):,.2f}")
-    else:
-        st.info("No transactions yet.")
+            st.info("No transactions yet.")
+    except:
+        st.info("ℹ️ Could not load transactions.")
 
 # ===================== Auth =====================
 
@@ -112,14 +109,14 @@ if st.button(auth_mode):
             user = supabase.auth.sign_in_with_password({"email": email, "password": password})
             st.session_state.user = user
             st.success("✅ Logged in successfully.")
-        except Exception as e:
-            st.error(f"❌ Login failed: {e}")
+        except:
+            st.warning("⚠️ Could not log in. Please try again.")
     else:
         try:
-            user = supabase.auth.sign_up({"email": email, "password": password})
+            supabase.auth.sign_up({"email": email, "password": password})
             st.success("✅ Signed up successfully. Please check your email.")
-        except Exception as e:
-            st.error(f"❌ Sign-up failed: {e}")
+        except:
+            st.warning("⚠️ Sign-up failed. Try a different email or password.")
 
 # ===================== Show app if logged in =====================
 
