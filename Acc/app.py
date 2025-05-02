@@ -42,10 +42,10 @@ def run_ledger_app():
     if submitted:
         debit, credit = 0, 0
         if txn_type == "Paid":
-            debit = 0 if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else amount
+            debit = 0 if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends", "Accounts Receivable"] else amount
             credit = amount if debit == 0 else 0
         else:
-            debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else 0
+            debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends", "Accounts Receivable"] else 0
             credit = 0 if debit else amount
 
         data = {
