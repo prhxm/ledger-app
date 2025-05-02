@@ -47,7 +47,7 @@ def run_ledger_app():
             debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else 0
             credit = 0 if debit else amount
 
-        dataa = {
+        data = {
             "date": str(date),
             "description": description.strip(),
             "amount": float(amount),
@@ -59,19 +59,19 @@ def run_ledger_app():
         }
 
         required_fields = ["date", "amount", "transaction_type", "account"]
-        missing_fields = [k for k in required_fields if dataa.get(k) in [None, "", 0]]
+        missing_fields = [k for k in required_fields if data.get(k) in [None, "", 0]]
 
         if missing_fields:
             st.warning(f"⚠️ Please fill out all required fields: {', '.join(missing_fields)}")
         else:
             try:
-                supabase.table("transactions").insert(dataa, {"returning": "minimal"}).execute()
+                supabase.table("transactions").insert(data, {"returning": "minimal"}).execute()
                 st.success("✅ Transaction successfully saved in Supabase.")
             except:
                 st.warning("⚠️ Something went wrong while saving the transaction. Please try again.")
 
     try:
-        response = supabase.table("transactions")             .select("*")             .eq("email", st.session_state.user.user.email)             .execute()
+        response = supabase.table("transactions").select("*").eq("email", st.session_state.user.user.email).execute()
     except:
         response = None
 
