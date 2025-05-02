@@ -38,7 +38,8 @@ with st.form("entry_form"):
         date = st.date_input("Date")
         description = st.text_input("Description")
     submitted = st.form_submit_button("Add Transaction")
-
+debit = 0
+credit = 0
 # Logic
 if submitted:
     if amount > 0 and txn_type in ["Paid", "Received"] and account:
