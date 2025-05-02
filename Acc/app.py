@@ -84,10 +84,10 @@ def run_ledger_app():
         st.dataframe(df)
 
         st.subheader("📏 Trial Balance")
-        df["Debit"] = pd.to_numeric(df["Debit"], errors="coerce").fillna(0)
-        df["Credit"] = pd.to_numeric(df["Credit"], errors="coerce").fillna(0)
-        total_debit = df["Debit"].sum()
-        total_credit = df["Credit"].sum()
+        df["debit"] = pd.to_numeric(df["debit"], errors="coerce").fillna(0)
+        df["credit"] = pd.to_numeric(df["credit"], errors="coerce").fillna(0)
+        total_debit = df["debit"].sum()
+        total_credit = df["credit"].sum()
         st.metric("Total Debit", f"{total_debit:,.2f}")
         st.metric("Total Credit", f"{total_credit:,.2f}")
 
