@@ -68,10 +68,10 @@ def run_ledger_app():
                 st.error(f"⚠️ Please fill in the fields below correctly: {', '.join(missing_fields)}")
             else:
                 try:
-                    supabase.table("transactions").insert(data).execute()
-                    st.success("✅ Transaction successfully saved in Supabase.")
-                except Exception as e:
-                    st.error(f"❌ Database error: {e}")
+    supabase.table("transactions").insert(data).execute()
+    st.success("✅ Transaction successfully saved in Supabase.")
+                except:
+                    pass 
 
     # 🔎 Load data only for this user
     response = supabase.table("transactions") \
