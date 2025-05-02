@@ -97,30 +97,6 @@ def run_ledger_app():
             st.error(f"❌ Unbalanced: Credit exceeds Debit by ${abs(total_credit - total_debit):,.2f}")
     else:
         st.info("No transactions found or failed to load data.")
-# -----------------------
-# 🗑️ Delete a Transaction (From Supabase)
-# -----------------------
-st.subheader("🗑️ Delete Transaction")
-
-if response and response.data:
-    df = pd.DataFrame(response.data)
-
-    # آماده‌سازی انتخابگر
-    options = [f"{i} | {row['date']} | {row['account']} | {row['amount']} {row['transaction_type']}"
-               for i, row in df.iterrows()]
-    selected_option = st.selectbox("Select a transaction to delete:", options)
-    selected_index = int(selected_option.split(" | ")[0])
-    selected_row = df.iloc[selected_index]
-
-    if st.button("Delete Selected Transaction"):
-        try:
-            supabase.table("transactions").delete().eq("id", selected_row["id"]).execute()
-            st.success(f"✅ Deleted transaction #{selected_index}")
-            st.experimental_rerun()
-        except Exception as e:
-            st.error(f"❌ Failed to delete: {e}")
-else:
-    st.info("No transactions available to delete.")
 
 # ===================== Authentication =====================
 st.title("🔐 Login or Sign Up")
