@@ -50,22 +50,28 @@ def run_ledger_app():
             else:
                 debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else 0
                 credit = 0 if debit else amount
-
-            new_row = {
-                "Date": date,
-                "Description": description,
-                "Amount": amount,
-                "Transaction Type": txn_type,
-                "Account": account,
-                "Debit": debit,
-                "Credit": credit,
-                "email": st.session_state.user.user.email  # 🟢 ذخیره با ایمیل
+            #Supabase
+            data = {
+                "date": str(date),
+                "description": description.strip(),
+                "amount": float(amount),
+                "transaction_type": txn_type,
+                "account": account,
+                "debit": float(debit),
+                "credit": float(credit),
             }
-
-            supabase.table("transactions").insert(new_row).execute()
-            st.success("✅ Transaction added.")
-        else:
-            st.error("❌ Please enter valid data.")
+            
+            # 
+            missing_fields = [k for k, v in data.items() if v in [None, "", 0] and k not in ["description"]]
+            
+            if missing_fields:
+                st.error(f"⚠️ Please fill in the fields below correctly: {', '.join(missing_fields)}")
+            else:
+                try:
+                    supabase.table("transactions").insert(data).execute()
+                    st.success("✅ Transaction successfully saved in Supabase.")
+                except Exception as e:
+                    st.error(f"❌ Database error: {e}")
 
     # 🔎 Load data only for this user
     response = supabase.table("transactions") \
