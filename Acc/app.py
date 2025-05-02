@@ -38,8 +38,6 @@ with st.form("entry_form"):
         date = st.date_input("Date")
         description = st.text_input("Description")
     submitted = st.form_submit_button("Add Transaction")
-debit = 0
-credit = 0
 # Logic
 if submitted:
     if amount > 0 and txn_type in ["Paid", "Received"] and account:
@@ -49,7 +47,7 @@ if submitted:
         if txn_type == "Paid":
             debit = 0 if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else amount
             credit = amount if debit == 0 else 0
-        else:
+        else:  # Received
             debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else 0
             credit = 0 if debit else amount
 
@@ -66,7 +64,7 @@ if submitted:
         st.session_state.ledger.loc[len(st.session_state.ledger)] = new_row
         st.success("Transaction added!")
 
-        #
+        # Send to Supabase
         data = {
             "date": str(date),
             "description": description,
@@ -80,18 +78,6 @@ if submitted:
 
     else:
         st.error("Please fill out all fields and enter a valid amount greater than 0.")
-# Send to Supabase
-data = {
-    "date": str(date),
-    "description": description,
-    "amount": amount,
-    "transaction_type": txn_type,
-    "account": account,
-    "debit": debit,
-    "credit": credit
-}
-
-supabase.table("transactions").insert(data).execute()
 # -----------------------
 # Trial Balance Check
 # -----------------------
