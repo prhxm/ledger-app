@@ -75,6 +75,26 @@ else:
 st.subheader("🧾 General Ledger")
 st.dataframe(st.session_state.ledger)
 # -----------------------
+# 🗑️ Delete a Transaction (Clean Dropdown)
+# -----------------------
+st.subheader("🗑️ Delete Transaction")
+
+df = st.session_state.ledger.copy()
+
+if not df.empty:
+    options = [f"{i} | {row['Date']} | {row['Account']} | {row['Amount']} {row['Transaction Type']}"
+               for i, row in df.iterrows()]
+    selected_option = st.selectbox("Select a transaction to delete:", options)
+    selected_index = int(selected_option.split(" | ")[0])
+
+    if st.button("Delete Selected Transaction"):
+        st.session_state.ledger.drop(selected_index, inplace=True)
+        st.session_state.ledger.reset_index(drop=True, inplace=True)
+        st.success(f"Deleted transaction #{selected_index}")
+        st.experimental_rerun()
+else:
+    st.info("No transactions available.")
+# -----------------------
 # Filter by Account
 # -----------------------
 st.subheader("🔍 Filter by Account")
