@@ -134,7 +134,7 @@ st.title("🔐 Login or Sign Up")
 
 auth_mode = st.radio("Choose:", ["Login", "Sign Up"], horizontal=True)
 email = st.text_input("Email", key="email")
-password = st.text_input("Password (min 4 chars)", type="password", key="password")
+password = st.text_input("Password (min 6 chars)", type="password", key="password")
 
 if st.button(auth_mode):
     if auth_mode == "Login":
