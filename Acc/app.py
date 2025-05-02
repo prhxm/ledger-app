@@ -14,6 +14,12 @@ supabase: Client = create_client(url, key)
 def run_ledger_app():
     st.title("📒 Simple Ledger App")
 
+    if "ledger" not in st.session_state:
+        st.session_state.ledger = pd.DataFrame(columns=[
+            "Date", "Description", "Amount", "Transaction Type",
+            "Account", "Debit", "Credit"
+        ])
+
     accounts = [
         "Cash", "Accounts Receivable", "Inventory", "Equipment",
         "Accounts Payable", "Unearned Revenue", "Common Stock", "Retained Earnings",
@@ -33,7 +39,6 @@ def run_ledger_app():
         submitted = st.form_submit_button("Add Transaction")
 
     if submitted:
-        # Compute debit/credit automatically
         debit, credit = 0, 0
         if txn_type == "Paid":
             debit = 0 if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends"] else amount
@@ -53,7 +58,6 @@ def run_ledger_app():
             "email": st.session_state.user.user.email
         }
 
-        # Validate user-input fields only
         required_fields = ["date", "amount", "transaction_type", "account"]
         missing_fields = [k for k in required_fields if data.get(k) in [None, "", 0]]
 
@@ -61,17 +65,13 @@ def run_ledger_app():
             st.warning(f"⚠️ Please fill out all required fields: {', '.join(missing_fields)}")
         else:
             try:
-                supabase.table("transactions").insert(data).execute()
+                supabase.table("transactions").insert(data, {"returning": "minimal"}).execute()
                 st.success("✅ Transaction successfully saved in Supabase.")
             except:
                 st.warning("⚠️ Something went wrong while saving the transaction. Please try again.")
 
-    # Load user-specific data
     try:
-        response = supabase.table("transactions") \
-            .select("*") \
-            .eq("email", st.session_state.user.user.email) \
-            .execute()
+        response = supabase.table("transactions")             .select("*")             .eq("email", st.session_state.user.user.email)             .execute()
     except:
         response = None
 
