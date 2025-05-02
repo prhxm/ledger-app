@@ -65,7 +65,7 @@ def run_ledger_app():
             st.warning(f"⚠️ Please fill out all required fields: {', '.join(missing_fields)}")
         else:
             try:
-                supabase.table("transactions").insert(data, {"returning": "minimal"}).execute()
+                supabase.table("transactions").insert(dataa, {"returning": "minimal"}).execute()
                 st.success("✅ Transaction successfully saved in Supabase.")
             except:
                 st.warning("⚠️ Something went wrong while saving the transaction. Please try again.")
