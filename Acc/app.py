@@ -55,7 +55,6 @@ def run_ledger_app():
             "account": account,
             "debit": float(debit),
             "credit": float(credit),
-            "email": st.session_state.user.user.email
         }
 
         required_fields = ["date", "amount", "transaction_type", "account"]
