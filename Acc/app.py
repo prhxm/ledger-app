@@ -27,6 +27,7 @@ def run_ledger_app():
     ]
     txn_types = ["Paid", "Received"]
 
+    # ========== Form for Data Entry ==========
     with st.form("entry_form"):
         col1, col2 = st.columns(2)
         with col1:
@@ -55,7 +56,7 @@ def run_ledger_app():
             "account": account,
             "debit": float(debit),
             "credit": float(credit),
-            "user_id": st.session_state.user.user.id  # Link with auth.uid()
+            "user_id": st.session_state.user.user.id
         }
 
         required_fields = ["date", "amount", "transaction_type", "account"]
@@ -70,6 +71,7 @@ def run_ledger_app():
             except Exception as e:
                 st.warning(f"⚠️ Something went wrong while saving the transaction: {e}")
 
+    # ========== Load Transactions for Logged-in User ==========
     try:
         response = supabase.table("transactions") \
             .select("*") \
@@ -83,6 +85,7 @@ def run_ledger_app():
         st.subheader("📊 General Ledger")
         st.dataframe(df)
 
+        # ========== Trial Balance ==========
         st.subheader("📏 Trial Balance")
         df["debit"] = pd.to_numeric(df["debit"], errors="coerce").fillna(0)
         df["credit"] = pd.to_numeric(df["credit"], errors="coerce").fillna(0)
@@ -95,8 +98,36 @@ def run_ledger_app():
             st.success("✅ Ledger is balanced.")
         else:
             st.error(f"❌ Unbalanced: Credit exceeds Debit by ${abs(total_credit - total_debit):,.2f}")
-    else:
-        st.info("No transactions found or failed to load data.")
+
+        # ========== Delete Transaction ==========
+        st.subheader("🗑️ Delete Transaction")
+
+        options = [f"{i} | {row['date']} | {row['account']} | {row['amount']} {row['transaction_type']}"
+                   for i, row in df.iterrows()]
+        selected_option = st.selectbox("Select a transaction to delete:", options)
+        selected_index = int(selected_option.split(" | ")[0])
+        selected_row = df.iloc[selected_index]
+
+        if st.button("Delete Selected Transaction"):
+            try:
+                supabase.table("transactions").delete().eq("id", selected_row["id"]).execute()
+                st.success(f"✅ Deleted transaction #{selected_index}")
+                st.experimental_rerun()
+            except Exception as e:
+                st.error(f"❌ Failed to delete: {e}")
+
+        # ========== Filter by Account ==========
+        st.subheader("🔍 Filter by Account")
+
+        unique_accounts = df["account"].dropna().unique().tolist()
+
+        if unique_accounts:
+            selected_account = st.selectbox("Select an account to filter:", unique_accounts)
+            filtered_df = df[df["account"] == selected_account]
+            st.write(f"🔎 Transactions for **{selected_account}**:")
+            st.dataframe(filtered_df)
+        else:
+            st.info("No accounts available yet.")
 
 # ===================== Authentication =====================
 st.title("🔐 Login or Sign Up")
