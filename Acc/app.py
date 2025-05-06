@@ -48,7 +48,7 @@ def simple_login():
                 st.success(f"You Just Joined Us, {username} 🫶")
             else:
                 st.error("Failed to Register... ❌")
-                
+          
 # ===================== Ledger App =====================
 def run_ledger_app():
     st.title("Simple Ledger App 📒")
@@ -177,3 +177,4 @@ if "user" in st.session_state:
     run_ledger_app()
 else:
     st.warning("Please log in to continue. 🧑‍💻")
+    simple_login()
