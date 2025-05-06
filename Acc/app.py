@@ -11,7 +11,44 @@ load_dotenv()
 url = os.getenv("SUPABASE_URL")
 key = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
+# ===================== Authentication =====================
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
 
+def load_users():
+    with open("users.json", "r") as f:
+        return json.load(f)
+
+users = load_users()
+
+def simple_login():
+    st.title("Easily Reach 🔐🪄")
+
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login / Register"):
+        if not username or not password:
+            st.warning("Please Enter Both Username and Password. 🌱")
+            return
+
+        response = supabase.table("users").select("*").eq("username", username).execute()
+        if response.data:
+            user = response.data[0]
+            if user["password"] == hash_password(password):
+                st.session_state.user = user
+                st.success(f"Welcome {username} 👍")
+            else:
+                st.error("Incorrect Password. 🖐️")
+        else:
+            new_user = {"username": username, "password": hash_password(password)}
+            result = supabase.table("users").insert(new_user).execute()
+            if result.status_code == 201:
+                st.session_state.user = result.data[0]
+                st.success(f"You Just Joined Us, {username} 🫶")
+            else:
+                st.error("Failed to Register... ❌")
+                
 # ===================== Ledger App =====================
 def run_ledger_app():
     st.title("📒 Simple Ledger App")
@@ -131,35 +168,6 @@ def run_ledger_app():
             st.dataframe(filtered_df)
         else:
             st.info("No accounts available yet.")
-
-# ===================== Authentication =====================
-def simple_login():
-    st.title("Easily Reach 🔐🪄")
-
-    username = st.text_input("Username")
-    password = st.text_input("Password", type="password")
-
-    if st.button("Login / Register"):
-        if not username or not password:
-            st.warning("Please Enter Both Username and Password. 🌱")
-            return
-
-        response = supabase.table("users").select("*").eq("username", username).execute()
-        if response.data:
-            user = response.data[0]
-            if user["password"] == password:
-                st.session_state.user = user
-                st.success(f"Welcome {username} 👍")
-            else:
-                st.error("Incorrect Password. 🖐️")
-        else:
-            new_user = {"username": username, "password": password}
-            result = supabase.table("users").insert(new_user).execute()
-            if result.status_code == 201:
-                st.session_state.user = result.data[0]
-                st.success(f"You Just Joined Us, {username} 🫶")
-            else:
-                st.error("Failed to Register... ❌")
 
 # ===================== Run App =====================
 if "user" in st.session_state:
