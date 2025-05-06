@@ -43,7 +43,7 @@ def simple_login():
         else:
             new_user = {"username": username, "password": hash_password(password)}
             result = supabase.table("users").insert(new_user).execute()
-            if result.status_code == 201:
+            if result.get("error") is None:
                 st.session_state.user = result.data[0]
                 st.success(f"You Just Joined Us, {username} 🫶")
             else:
