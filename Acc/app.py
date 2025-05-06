@@ -131,30 +131,37 @@ def run_ledger_app():
             st.info("No accounts available yet.")
 
 # ===================== Authentication =====================
-st.title("🔐 Login or Sign Up")
+def simple_login():
+    st.title("Easily Reach 🔐🪄")
 
-auth_mode = st.radio("Choose:", ["Login", "Sign Up"], horizontal=True)
-email = st.text_input("Email", key="email")
-password = st.text_input("Password (min 6 chars)", type="password", key="password")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
 
-if st.button(auth_mode):
-    if auth_mode == "Login":
-        try:
-            user = supabase.auth.sign_in_with_password({"email": email, "password": password})
-            st.session_state.user = user
-            st.success("✅ Logged in successfully.")
-        except Exception as e:
-            st.error(f"❌ Login failed: {e}")
-    else:
-        try:
-            user = supabase.auth.sign_up({"email": email, "password": password})
-            st.success("✅ Signed up successfully. Please check your email.")
-        except Exception as e:
-            st.error(f"❌ Sign-up failed: {e}")
+    if st.button("Login / Register"):
+        if not username or not password:
+            st.warning("Please Enter Both Username and Password. 🌱")
+            return
+
+        response = supabase.table("users").select("*").eq("username", username).execute()
+        if response.data:
+            user = response.data[0]
+            if user["password"] == password:
+                st.session_state.user = user
+                st.success(f"Welcome {username} 👍")
+            else:
+                st.error("Incorrect Password. 🖐️")
+        else:
+            new_user = {"username": username, "password": password}
+            result = supabase.table("users").insert(new_user).execute()
+            if result.status_code == 201:
+                st.session_state.user = result.data[0]
+                st.success(f"You Just Joined Us, {username} 🫶")
+            else:
+                st.error("Failed to Register... ❌")
 
 # ===================== Run App =====================
 if "user" in st.session_state:
-    st.success(f"🔓 Logged in as {st.session_state.user.user.email}")
+    st.success(f"You Logged in {st.session_state.user['username']} 🔓☕")
     run_ledger_app()
 else:
-    st.warning("Please log in to continue.")
+    st.warning("Please log in to continue. 🧑‍💻")
