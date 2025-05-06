@@ -80,6 +80,7 @@ else:
         with col2:
             date = st.date_input("Date")
             description = st.text_input("Description")
+            
         submitted = st.form_submit_button("Add Transaction")
 
     if submitted:
