@@ -16,7 +16,7 @@ def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 def load_users():
-    with open("users.json", "r") as f:
+    with open("Acc/users.json", "r") as f:
         return json.load(f)
 
 users = load_users()
