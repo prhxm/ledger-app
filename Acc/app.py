@@ -38,6 +38,7 @@ def simple_login():
             if user["password"] == hash_password(password):
                 st.session_state.user = user
                 st.success(f"Welcome {username} 👍")
+                st.rerun()
             else:
                 st.error("Incorrect Password. 🖐️")
         else:
