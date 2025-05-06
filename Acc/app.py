@@ -66,10 +66,7 @@ def run_ledger_app():
     ]
     txn_types = ["Paid", "Received"]
     
-if "user" not in st.session_state:
-    simple_login()
-else:
-    run_ledger_app()
+
     # ========== Form for Data Entry ==========
     with st.form("entry_form"):
         col1, col2 = st.columns(2)
@@ -100,7 +97,7 @@ else:
             "account": account,
             "debit": float(debit),
             "credit": float(credit),
-            "user_id": st.session_state.user.user.id
+            "user_id": st.session_state.user["id"]
         }
         #st.write("Current user_id from session:", st.session_state.user.user.id)
         
@@ -173,7 +170,10 @@ else:
             st.dataframe(filtered_df)
         else:
             st.info("No accounts available yet.")
-
+if "user" not in st.session_state:
+    simple_login()
+else:
+    run_ledger_app()
 # ===================== Run App =====================
 if "user" in st.session_state:
     st.success(f"You Logged in {st.session_state.user['username']} 🔓☕")
