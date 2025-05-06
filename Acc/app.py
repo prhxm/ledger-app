@@ -55,7 +55,7 @@ else:
                 
 # ===================== Ledger App =====================
 def run_ledger_app():
-    st.title("📒 Simple Ledger App")
+    st.title("Simple Ledger App 📒")
 
     if "ledger" not in st.session_state:
         st.session_state.ledger = pd.DataFrame(columns=[
@@ -107,13 +107,13 @@ def run_ledger_app():
         missing_fields = [k for k in required_fields if data.get(k) in [None, "", 0]]
 
         if missing_fields:
-            st.warning(f"⚠️ Please fill out all required fields: {', '.join(missing_fields)}")
+            st.warning(f"Please fill out all required fields: {', '.join(missing_fields)} ⚠️")
         else:
             try:
                 supabase.table("transactions").insert(data).execute()
-                st.success("✅ Transaction successfully saved in Supabase.")
+                st.success("Transaction successfully saved in Supabase. ✅")
             except Exception as e:
-                st.warning(f"⚠️ Something went wrong while saving the transaction: {e}")
+                st.warning(f"Something went wrong while saving the transaction: {e} ⚠️")
 
     # ========== Load Transactions for Logged-in User ==========
     try:
@@ -126,7 +126,7 @@ def run_ledger_app():
 
     if response and response.data:
         df = pd.DataFrame(response.data)
-        st.subheader("📊 General Ledger")
+        st.subheader("General Ledger 📊")
         st.dataframe(df)
 
         # ========== Trial Balance ==========
@@ -139,12 +139,12 @@ def run_ledger_app():
         st.metric("Total Credit", f"{total_credit:,.2f}")
 
         if total_debit == total_credit:
-            st.success("✅ Ledger is balanced.")
+            st.success("Ledger is balanced. ✅")
         else:
-            st.error(f"❌ Unbalanced: Credit exceeds Debit by ${abs(total_credit - total_debit):,.2f}")
+            st.error(f"Unbalanced: Credit exceeds Debit by ${abs(total_credit - total_debit):,.2f} ❌")
 
         # ========== Delete Transaction ==========
-        st.subheader("🗑️ Delete Transaction")
+        st.subheader("Delete Transaction 🗑️")
 
         options = [f"{i} | {row['date']} | {row['account']} | {row['amount']} {row['transaction_type']}"
                    for i, row in df.iterrows()]
@@ -155,10 +155,10 @@ def run_ledger_app():
         if st.button("Delete Selected Transaction"):
             try:
                 supabase.table("transactions").delete().eq("id", selected_row["id"]).execute()
-                st.success(f"✅ Deleted transaction #{selected_index}")
+                st.success(f"Deleted transaction #{selected_index} ✅")
                 st.experimental_rerun()
             except Exception as e:
-                st.error(f"❌ Failed to delete: {e}")
+                st.error(f"Failed to delete: {e} ❌")
 
         # ========== Filter by Account ==========
         st.subheader("🔍 Filter by Account")
