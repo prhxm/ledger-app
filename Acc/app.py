@@ -48,10 +48,6 @@ def simple_login():
                 st.success(f"You Just Joined Us, {username} 🫶")
             else:
                 st.error("Failed to Register... ❌")
-if "user" not in st.session_state:
-    simple_login()
-else:
-    run_ledger_app()
                 
 # ===================== Ledger App =====================
 def run_ledger_app():
@@ -69,7 +65,11 @@ def run_ledger_app():
         "Sales Revenue", "Rent Expense", "Utilities Expense", "Dividends"
     ]
     txn_types = ["Paid", "Received"]
-
+    
+if "user" not in st.session_state:
+    simple_login()
+else:
+    run_ledger_app()
     # ========== Form for Data Entry ==========
     with st.form("entry_form"):
         col1, col2 = st.columns(2)
