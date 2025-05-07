@@ -122,7 +122,7 @@ def run_ledger_app():
     try:
         response = supabase.table("transactions") \
             .select("*") \
-            .eq("user_id", st.session_state.user.user.id) \
+            .eq("user_id", st.session_state.user["id"]) \
             .execute()
     except:
         response = None
