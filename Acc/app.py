@@ -6,41 +6,55 @@ import json
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
-st.set_page_config(page_title="prhx | Personal Ledger", layout="centered")
-
+# ✅ Custom page config
+st.set_page_config(
+    page_title="prhx - Simple Ledger App",
+    page_icon="🐝",
+    layout="centered",
+    initial_sidebar_state="collapsed"
+)
 st.markdown("""
     <style>
-        body, html, [class*="css"]  {
-            font-family: 'Comic Sans MS', sans-serif;
-        }
+    /* 🐝 Font and colors */
+    html, body, [class*="css"] {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        color: #f9d342;           /* Yellow text */
+        background-color: #111111; /* Dark background */
+    }
 
-        .main {
-            background-color: #111;
-            color: #fff;
-        }
+    /* 🐝 Inputs & Buttons */
+    input, textarea, select {
+        background-color: #222 !important;
+        color: #f9d342 !important;
+        border: 1px solid #f9d342 !important;
+        border-radius: 10px;
+    }
 
-        input, textarea {
-            background-color: #222 !important;
-            color: #fff !important;
-        }
+    button[kind="primary"] {
+        background-color: #f9d342 !important;
+        color: #000 !important;
+        border-radius: 10px;
+        font-weight: bold;
+    }
 
-        button {
-            background-color: #FFD700 !important;
-            color: black !important;
-            font-weight: bold;
-        }
+    /* 🐝 Titles */
+    .stTitle {
+        font-size: 2.5rem;
+        color: #f9d342;
+        font-weight: bold;
+    }
 
-        h1 {
-            color: #FFD700;
-            text-align: center;
-        }
-
-        .bee {
-            font-size: 32px;
-            text-align: center;
-        }
+    /* 🐝 Bees decoration */
+    .stApp::before {
+        content: "🐝 🐝";
+        font-size: 3rem;
+        position: absolute;
+        top: 10px;
+        left: 20px;
+    }
     </style>
 """, unsafe_allow_html=True)
+
 
 
 # Load environment variables
