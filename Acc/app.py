@@ -53,27 +53,31 @@ st.markdown("""
     🐝
 </div>
 """, unsafe_allow_html=True)
+    <div class="login-container">
+        <div class="login-form">
 
 st.markdown(
     """
     <style>
-        .login-container {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .login-form {
-            flex: 1;
-        }
-        .honeycomb-img {
-            flex: 1;
-            text-align: center;
-        }
-        .honeycomb-img img {
-            width: 320px;
-            max-width: 100%;
-        }
+    .login-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .login-form {
+        flex: 1;
+        min-width: 300px;
+    }
+    .honeycomb-img {
+        flex: 1;
+        text-align: center;
+    }
+    .honeycomb-img img {
+        width: 320px;
+        max-width: 100%;
+    }
     </style>
 
     <div class="login-container">
@@ -107,6 +111,17 @@ def simple_login():
     password = st.text_input("Password", type="password")
 
     if st.button("Login / Register"):
+        st.markdown(
+    """
+        </div>
+        <div class="honeycomb-img">
+            <img src="assets/honeycomb.png">
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
         if not username or not password:
             st.warning("Please Enter Both Username and Password. 🌱")
             return
@@ -132,16 +147,7 @@ def simple_login():
                 st.success(f"You Just Joined Us, {username} 🫶")
             else:
                 st.error("Failed to Register... ❌")
-st.markdown(
-    """
-        </div>
-        <div class="honeycomb-img">
-            <img src="assets/honeycomb.png">
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+
           
 # ===================== Ledger App =====================
 def run_ledger_app():
