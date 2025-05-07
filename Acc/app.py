@@ -14,65 +14,43 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ✅ Clean styling without background image
+# ✅ Custom page config
+st.set_page_config(
+    page_title="prhx - Simple Ledger App",
+    page_icon="🐝",
+    layout="centered",
+    initial_sidebar_state="collapsed"
+)
+
+# ✅ Styling
 st.markdown("""
 <style>
-html, body, .stApp {
+html, body, [class*="css"] {
     font-family: "Comic Sans MS", cursive, sans-serif;
     color: #f9d342;
     background-color: #111111;
-    position: relative;
-    z-index: 1;
 }
-
 input, textarea, select {
     background-color: #222 !important;
     color: #f9d342 !important;
     border: 1px solid #f9d342 !important;
     border-radius: 10px;
 }
-
 button[kind="primary"] {
     background-color: #f9d342 !important;
     color: #000 !important;
     border-radius: 10px;
     font-weight: bold;
 }
-
 .stTitle {
     font-size: 2.5rem;
     color: #f9d342;
     font-weight: bold;
 }
-
-.login-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    margin-top: 2rem;
-}
-
-.login-form {
-    flex: 1;
-    min-width: 300px;
-}
-
-.honeycomb-img {
-    flex: 1;
-    text-align: right;
-}
-
-.honeycomb-img img {
-    width: 320px;
-    max-width: 100%;
-    filter: drop-shadow(0 0 10px #f9d34233);
-}
 </style>
 """, unsafe_allow_html=True)
 
-# ✅ Header
+# ✅ UI Header
 st.markdown("<div style='text-align:center; font-size: 3rem;'>🐝 &nbsp; 🐝</div>", unsafe_allow_html=True)
 st.markdown("<div style='text-align:right; color:#f9d342; font-size: 1.1rem; font-style: italic;'>Stay sharp, stay curious — your balance begins here. 🐝</div>", unsafe_allow_html=True)
 
