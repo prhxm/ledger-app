@@ -162,14 +162,6 @@ def simple_login():
             else:
                 st.error("Failed to Register... ❌")
 
-# ✅ Close HTML wrapper (اگه خواستی جدا استفاده کنی)
-st.markdown("""
-    </div> <!-- close login-form -->
-    <div class="honeycomb-img">
-        <img src="https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png">
-    </div>
-</div> <!-- close login-container -->
-""", unsafe_allow_html=True)
 
 # ===================== Ledger App =====================
 def run_ledger_app():
