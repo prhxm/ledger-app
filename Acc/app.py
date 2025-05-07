@@ -43,7 +43,11 @@ def simple_login():
                 st.error("Incorrect Password. 🖐️")
         else:
             new_user = {"username": username, "password": hash_password(password)}
-            result = supabase.table("users").insert(new_user).execute()
+            try:
+                result = supabase.table("users").insert(new_user).execute()
+                st.write("🧾 Insert Result:", result)
+            except Exception as e:
+                st.error(f"Insert failed: {e}")
             if result.get("error") is None:
                 st.session_state.user = result.data[0]
                 st.success(f"You Just Joined Us, {username} 🫶")
