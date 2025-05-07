@@ -11,6 +11,45 @@ load_dotenv()
 url = os.getenv("SUPABASE_URL")
 key = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
+
+
+st.set_page_config(page_title="prhx | Personal Ledger", layout="centered")
+
+st.markdown("""
+    <style>
+        body, html, [class*="css"]  {
+            font-family: 'Comic Sans MS', sans-serif;
+        }
+
+        .main {
+            background-color: #111;
+            color: #fff;
+        }
+
+        input, textarea {
+            background-color: #222 !important;
+            color: #fff !important;
+        }
+
+        button {
+            background-color: #FFD700 !important;
+            color: black !important;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #FFD700;
+            text-align: center;
+        }
+
+        .bee {
+            font-size: 32px;
+            text-align: center;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 # ===================== Authentication =====================
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
