@@ -44,7 +44,7 @@ def simple_login():
         else:
             new_user = {"username": username, "password": hash_password(password)}
             try:
-                result = supabase.table("users").insert(new_user).execute({'returning': 'minimal'})
+                result = supabase.table("users").insert(new_user, returning="minimal").execute()
                 st.write("🧾 Insert Result:", result)
             except Exception as e:
                 st.error(f"Insert failed: {e}")
