@@ -6,7 +6,7 @@ import json
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
-# ✅ Custom page config
+# ✅ Page config
 st.set_page_config(
     page_title="prhx - Simple Ledger App",
     page_icon="🐝",
@@ -14,17 +14,17 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ✅ Background honeycomb image (faint)
+# ✅ Background and custom styling
 st.markdown("""
 <style>
-/* 💡 Faint honeycomb background */
+/* Background honeycomb image faint */
 body::before {
     content: "";
     background-image: url('https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 300px;
-    opacity: 0.035;
+    opacity: 0.03;
     position: fixed;
     top: 0;
     left: 0;
@@ -33,29 +33,73 @@ body::before {
     z-index: 0;
 }
 
-/* ✅ Keep app content above it */
-.stApp {
+/* Content stays above background */
+html, body, .stApp, .login-container {
     position: relative;
     z-index: 1;
-}
-
-/* Optional: set fonts and colors */
-html, body {
     font-family: "Comic Sans MS", cursive, sans-serif;
     color: #f9d342;
     background-color: #111111;
 }
+
+input, textarea, select {
+    background-color: #222 !important;
+    color: #f9d342 !important;
+    border: 1px solid #f9d342 !important;
+    border-radius: 10px;
+}
+
+button[kind="primary"] {
+    background-color: #f9d342 !important;
+    color: #000 !important;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.stTitle {
+    font-size: 2.5rem;
+    color: #f9d342;
+    font-weight: bold;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.login-form {
+    flex: 1;
+    min-width: 300px;
+}
+
+.honeycomb-img {
+    flex: 1;
+    text-align: right;
+}
+
+.honeycomb-img img {
+    width: 320px;
+    max-width: 100%;
+    filter: drop-shadow(0 0 10px #f9d34233);
+}
 </style>
 """, unsafe_allow_html=True)
 
+# ✅ Header
+st.markdown("<div style='text-align:center; font-size: 3rem;'>🐝 &nbsp; 🐝</div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align:right; color:#f9d342; font-size: 1.1rem; font-style: italic;'>Stay sharp, stay curious — your balance begins here. 🐝</div>", unsafe_allow_html=True)
 
-# ✅ Supabase setup
+# ✅ Environment & Supabase setup
 load_dotenv()
 url = os.getenv("SUPABASE_URL")
 key = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
-# ✅ Auth helpers
+# ✅ Helper functions
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
@@ -68,12 +112,23 @@ users = load_users()
 # ✅ Login form
 def simple_login():
     st.title("Easily Reach 🪄")
-    
+
+    st.markdown("""
+    <div class="login-container">
+        <div class="login-form">
+    """, unsafe_allow_html=True)
+
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
-    st.markdown("</div>", unsafe_allow_html=True)
-    # ✅ 
+    st.markdown("""
+        </div>
+        <div class="honeycomb-img">
+            <img src="https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png">
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
     if st.button("Login / Register"):
         if not username or not password:
             st.warning("Please Enter Both Username and Password. 🌱")
@@ -87,7 +142,7 @@ def simple_login():
                 st.success(f"Welcome {username} 👍")
                 st.rerun()
             else:
-                st.error("Incorrect Password. 🖐️")
+                st.error("Incorrect Password. 🗑️")
         else:
             new_user = {"username": username, "password": hash_password(password)}
             try:
@@ -98,12 +153,11 @@ def simple_login():
                 return
             if result.get("error") is None:
                 st.session_state.user = result.data[0]
-                st.success(f"You Just Joined Us, {username} 🫶")
+                st.success(f"You Just Joined Us, {username} 🫦")
                 st.rerun()
             else:
                 st.error("Failed to Register... ❌")
-
-
+                
 # ===================== Ledger App =====================
 def run_ledger_app():
     st.title("Simple Ledger App 📒")
