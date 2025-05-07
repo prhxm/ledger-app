@@ -17,19 +17,22 @@ st.set_page_config(
 # ✅ Background honeycomb image (faint)
 st.markdown("""
 <style>
+/* 🐝 Background honeycomb image faint */
 body::before {
     content: "";
-    background: url('https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png') no-repeat right 120px;
-    background-size: 400px;
+    background-image: url('https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 300px;
     opacity: 0.05;
-    position: absolute;
+    position: fixed;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
-    pointer-events: none;
-    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
