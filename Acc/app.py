@@ -306,9 +306,7 @@ def run_ledger_app():
             st.info("No accounts available yet.")
 
 # ===================== Run App =====================
-if "user" in st.session_state:
-    st.success(f"You Logged in {st.session_state.user['username']} 🔓☕")
-    run_ledger_app()
-else:
-    st.warning("Please log in to continue. 🧑‍💻")
+if "user" not in st.session_state:
     simple_login()
+else:
+    run_ledger_app()
