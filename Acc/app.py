@@ -49,11 +49,7 @@ st.markdown("<div style='text-align:center; font-size: 3rem;'>🐝 &nbsp; 🐝</
 st.markdown("<div style='text-align:right; color:#f9d342; font-size: 1.1rem; font-style: italic;'>Stay sharp, stay curious — your balance begins here. 🐝</div>", unsafe_allow_html=True)
 st.markdown("""
 <div style="position:absolute; right:30px; top:130px; font-size: 2rem; color:#f9d342; line-height: 2rem; text-align:right;">
-    🐝 <br>
-    ⋯<br>
-    &nbsp;&nbsp;⋯<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;⋯<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⋯<br>
+    🐝 <br><br><br><br><br>
     🐝
 </div>
 """, unsafe_allow_html=True)
@@ -79,7 +75,7 @@ def load_users():
 users = load_users()
 
 def simple_login():
-    st.title("Easily Reach 🔐🪄")
+    st.title("Easily Reach 🪄")
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
