@@ -94,7 +94,9 @@ def run_ledger_app():
         col1, col2 = st.columns(2)
         with col1:
             account = st.selectbox("Account", accounts)
-            amount = st.number_input("Amount", min_value=0.0, format="%.2f")
+            amount = st.number_input("Amount", min_value=0.0, format="%.2f", key="amount_input")
+            if st.session_state.amount_input == 0.0:
+            st.session_state.amount_input = None
             txn_type = st.selectbox("Transaction Type", txn_types)
         with col2:
             date = st.date_input("Date")
