@@ -6,13 +6,6 @@ import json
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
-# Load environment variables
-load_dotenv()
-url = os.getenv("SUPABASE_URL")
-key = os.getenv("SUPABASE_KEY")
-supabase: Client = create_client(url, key)
-
-
 st.set_page_config(page_title="prhx | Personal Ledger", layout="centered")
 
 st.markdown("""
@@ -49,6 +42,12 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+
+# Load environment variables
+load_dotenv()
+url = os.getenv("SUPABASE_URL")
+key = os.getenv("SUPABASE_KEY")
+supabase: Client = create_client(url, key)
 
 # ===================== Authentication =====================
 def hash_password(password):
