@@ -6,53 +6,12 @@ import json
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
-# ✅ Page config
-st.set_page_config(
-    page_title="prhx - Simple Ledger App",
-    page_icon="🐝",
-    layout="centered",
-    initial_sidebar_state="collapsed"
-)
-
-# ✅ Styling
-st.markdown("""
-<style>
-html, body, [class*="css"] {
-    font-family: "Comic Sans MS", cursive, sans-serif;
-    color: #f9d342;
-    background-color: #111111;
-}
-input, textarea, select {
-    background-color: #222 !important;
-    color: #f9d342 !important;
-    border: 1px solid #f9d342 !important;
-    border-radius: 10px;
-}
-button[kind="primary"] {
-    background-color: #f9d342 !important;
-    color: #000 !important;
-    border-radius: 10px;
-    font-weight: bold;
-}
-.stTitle {
-    font-size: 2.5rem;
-    color: #f9d342;
-    font-weight: bold;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# ✅ UI Header
-st.markdown("<div style='text-align:center; font-size: 3rem;'>🐝 &nbsp; 🐝</div>", unsafe_allow_html=True)
-st.markdown("<div style='text-align:right; color:#f9d342; font-size: 1.1rem; font-style: italic;'>Stay sharp, stay curious — your balance begins here. 🐝</div>", unsafe_allow_html=True)
-
-# ✅ Environment & Supabase setup
+# Load environment variables
 load_dotenv()
 url = os.getenv("SUPABASE_URL")
 key = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
-
-# ✅ Helper functions
+# ===================== Authentication =====================
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
@@ -62,25 +21,11 @@ def load_users():
 
 users = load_users()
 
-# ✅ Login form
 def simple_login():
-    st.title("Easily Reach 🪄")
-
-    st.markdown("""
-    <div class="login-container">
-        <div class="login-form">
-    """, unsafe_allow_html=True)
+    st.title("Easily Reach 🔐🪄")
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
-
-    st.markdown("""
-        </div>
-        <div class="honeycomb-img">
-            <img src="https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png">
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
 
     if st.button("Login / Register"):
         if not username or not password:
@@ -103,14 +48,12 @@ def simple_login():
                 st.write("🧾 Insert Result:", result)
             except Exception as e:
                 st.error(f"Insert failed: {e}")
-                return
             if result.get("error") is None:
                 st.session_state.user = result.data[0]
                 st.success(f"You Just Joined Us, {username} 🫶")
-                st.rerun()
             else:
                 st.error("Failed to Register... ❌")
-                
+          
 # ===================== Ledger App =====================
 def run_ledger_app():
     st.title("Simple Ledger App 📒")
@@ -122,28 +65,11 @@ def run_ledger_app():
         ])
 
     accounts = [
-        # Assets
-        "Cash", "Bank", "Accounts Receivable", "Inventory", "Prepaid Expenses",
-        "Equipment", "Buildings", "Land", "Vehicles", "Investments", "Accumulated Depreciation",
-    
-        # Liabilities
-        "Accounts Payable", "Salaries Payable", "Taxes Payable", "Unearned Revenue",
-        "Interest Payable", "Loans Payable", "Bonds Payable",
-    
-        # Equity
-        "Common Stock", "Preferred Stock", "Retained Earnings", "Dividends",
-        "Treasury Stock", "Additional Paid-In Capital",
-    
-        # Revenues
-        "Sales Revenue", "Service Revenue", "Interest Revenue", "Rental Revenue", "Gain on Sale of Assets",
-    
-        # Expenses
-        "Rent Expense", "Utilities Expense", "Salaries Expense", "Depreciation Expense",
-        "Advertising Expense", "Supplies Expense", "Interest Expense", "Insurance Expense",
-        "Cost of Goods Sold"
+        "Cash", "Accounts Receivable", "Inventory", "Equipment",
+        "Accounts Payable", "Unearned Revenue", "Common Stock", "Retained Earnings",
+        "Sales Revenue", "Rent Expense", "Utilities Expense", "Dividends"
     ]
-
-    txn_types = ["Reduced (-)", "Increased (+)"]
+    txn_types = ["Paid", "Received"]
     
 
     # ========== Form for Data Entry ==========
@@ -151,7 +77,7 @@ def run_ledger_app():
         col1, col2 = st.columns(2)
         with col1:
             account = st.selectbox("Account", accounts)
-            amount = st.number_input("Amount", min_value=0.0, format="%.2f", key="amount_input", step= 1.0)
+            amount = st.number_input("Amount", min_value=0.0, format="%.2f")
             txn_type = st.selectbox("Transaction Type", txn_types)
         with col2:
             date = st.date_input("Date")
@@ -161,35 +87,11 @@ def run_ledger_app():
 
     if submitted:
         debit, credit = 0, 0
-        if txn_type == "Reduced (-)":
-            debit = 0 if account in  [
-    # Assets
-    "Cash", "Bank", "Accounts Receivable", "Inventory", "Prepaid Expenses",
-    "Equipment", "Buildings", "Land", "Vehicles", "Investments",
-
-    # Expenses
-    "Rent Expense", "Utilities Expense", "Salaries Expense", "Depreciation Expense",
-    "Advertising Expense", "Supplies Expense", "Interest Expense", "Insurance Expense",
-    "Cost of Goods Sold",
-
-    # Equity (Drawings)
-    "Dividends", "Treasury Stock"
-] else amount
+        if txn_type == "Paid":
+            debit = 0 if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends", "Accounts Receivable"] else amount
             credit = amount if debit == 0 else 0
         else:
-            debit = amount if account in [ 
-    # Assets
-    "Cash", "Bank", "Accounts Receivable", "Inventory", "Prepaid Expenses",
-    "Equipment", "Buildings", "Land", "Vehicles", "Investments",
-
-    # Expenses
-    "Rent Expense", "Utilities Expense", "Salaries Expense", "Depreciation Expense",
-    "Advertising Expense", "Supplies Expense", "Interest Expense", "Insurance Expense",
-    "Cost of Goods Sold",
-
-    # Equity (Drawings)
-    "Dividends", "Treasury Stock"
-] else 0
+            debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends", "Accounts Receivable"] else 0
             credit = 0 if debit else amount
 
         data = {
@@ -220,7 +122,7 @@ def run_ledger_app():
     try:
         response = supabase.table("transactions") \
             .select("*") \
-            .eq("user_id", st.session_state.user["id"]) \
+            .eq("user_id", st.session_state.user.user.id) \
             .execute()
     except:
         response = None
@@ -228,8 +130,7 @@ def run_ledger_app():
     if response and response.data:
         df = pd.DataFrame(response.data)
         st.subheader("General Ledger 📊")
-        columns_to_display = [col for col in df.columns if col not in ["id", "user_id"]]
-        st.dataframe(df[columns_to_display])
+        st.dataframe(df)
 
         # ========== Trial Balance ==========
         st.subheader("📏 Trial Balance")
@@ -276,10 +177,9 @@ def run_ledger_app():
             st.info("No accounts available yet.")
 
 # ===================== Run App =====================
-if "user" not in st.session_state:
-    simple_login()
-else:
+if "user" in st.session_state:
     st.success(f"You Logged in {st.session_state.user['username']} 🔓☕")
-    # Placeholder for app main
-    st.write("This is your dashboard. Welcome!")
-
+    run_ledger_app()
+else:
+    st.warning("Please log in to continue. 🧑‍💻")
+    simple_login()
