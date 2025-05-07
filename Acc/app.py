@@ -54,7 +54,14 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
+st.markdown(
+        """
+        <div style="text-align:center;">
+            <img src="assets/honeycomb.png" width="350px">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 
 
@@ -149,14 +156,6 @@ def run_ledger_app():
             account = st.selectbox("Account", accounts)
             amount = st.number_input("Amount", min_value=0.0, format="%.2f", key="amount_input", step= 1.0)
             txn_type = st.selectbox("Transaction Type", txn_types)
-            st.markdown(
-        """
-        <div style="text-align:center;">
-            <img src="assets/honeycomb.png" width="350px">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
         with col2:
             date = st.date_input("Date")
             description = st.text_input("Description")
