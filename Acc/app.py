@@ -33,12 +33,11 @@ body::before {
     z-index: 0;
 }
 
-/* 🐝 Make sure content stays above */
+/* 🔸 Make sure content stays visible */
 .login-container, .stApp {
     position: relative;
     z-index: 1;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
