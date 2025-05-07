@@ -17,7 +17,7 @@ st.set_page_config(
 # ✅ Background honeycomb image (faint)
 st.markdown("""
 <style>
-/* 🐝 Background honeycomb image faint */
+/* ✅ Faint Background */
 body::before {
     content: "";
     background-image: url('https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png');
@@ -33,25 +33,16 @@ body::before {
     z-index: 0;
 }
 
-/* 🔸 Ensure main content stays above */
-html, body, [class*="css"], .stApp, .login-container {
+/* ✅ Content Stays Above */
+html, body, .stApp, [class*="css"], .login-container {
     position: relative;
     z-index: 1;
     font-family: "Comic Sans MS", cursive, sans-serif;
     color: #f9d342;
     background-color: #111111;
 }
-</style>
-""", unsafe_allow_html=True)
 
-# ✅ Styling
-st.markdown("""
-<style>
-html, body, [class*="css"] {
-    font-family: "Comic Sans MS", cursive, sans-serif;
-    color: #f9d342;
-    background-color: #111111;
-}
+/* ✅ Inputs & Buttons */
 input, textarea, select {
     background-color: #222 !important;
     color: #f9d342 !important;
@@ -64,6 +55,8 @@ button[kind="primary"] {
     border-radius: 10px;
     font-weight: bold;
 }
+
+/* ✅ Title & Layout */
 .stTitle {
     font-size: 2.5rem;
     color: #f9d342;
@@ -92,15 +85,6 @@ button[kind="primary"] {
 </style>
 """, unsafe_allow_html=True)
 
-# ✅ UI Header
-st.markdown("<div style='text-align:center; font-size: 3rem;'>🐝 &nbsp; 🐝</div>", unsafe_allow_html=True)
-st.markdown("<div style='text-align:right; color:#f9d342; font-size: 1.1rem; font-style: italic;'>Stay sharp, stay curious — your balance begins here. 🐝</div>", unsafe_allow_html=True)
-
-# ✅ Layout container start
-st.markdown("""
-<div class="login-container">
-    <div class="login-form">
-""", unsafe_allow_html=True)
 
 # ✅ Supabase setup
 load_dotenv()
