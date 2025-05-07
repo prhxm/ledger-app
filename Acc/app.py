@@ -24,13 +24,19 @@ body::before {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 300px;
-    opacity: 0.05;
+    opacity: 0.03;
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
     z-index: 0;
+}
+
+/* 🐝 Make sure content stays above */
+.login-container, .stApp {
+    position: relative;
+    z-index: 1;
 }
 
 </style>
@@ -125,7 +131,8 @@ def simple_login():
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
-    st.markdown(
+#comment
+   ''' st.markdown(
         """
             </div>
             <div class="honeycomb-img">
@@ -134,7 +141,7 @@ def simple_login():
         </div>
         """,
         unsafe_allow_html=True
-    )
+    )'''
 
     if st.button("Login / Register"):
         if not username or not password:
