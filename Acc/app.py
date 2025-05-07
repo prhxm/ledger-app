@@ -6,6 +6,47 @@ import json
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
+# ✅ Custom page config
+st.set_page_config(
+    page_title="prhx - Simple Ledger App",
+    page_icon="🐝",
+    layout="centered",
+    initial_sidebar_state="collapsed"
+)
+
+st.markdown("""
+<style>
+/* 🐝 Font and colors */
+html, body, [class*="css"] {
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    color: #f9d342; /* Yellow text */
+    background-color: #111111; /* Dark background */
+}
+
+/* 🐝 Inputs & Buttons */
+input, textarea, select {
+    background-color: #222 !important;
+    color: #f9d342 !important;
+    border: 1px solid #f9d342 !important;
+    border-radius: 10px;
+}
+button[kind="primary"] {
+    background-color: #f9d342 !important;
+    color: #000 !important;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* 🐝 Titles */
+.stTitle {
+    font-size: 2.5rem;
+    color: #f9d342;
+    font-weight: bold;
+}
+</style>
+""", unsafe_allow_html=True)
+st.markdown("<div style='text-align:center; font-size: 3rem;'>🐝 &nbsp; 🐝</div>", unsafe_allow_html=True)
+
 # Load environment variables
 load_dotenv()
 url = os.getenv("SUPABASE_URL")
