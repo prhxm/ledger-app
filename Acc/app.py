@@ -50,10 +50,10 @@ st.markdown("<div style='text-align:right; color:#f9d342; font-size: 1.1rem; fon
 st.markdown("""
 <div style="position:absolute; right:30px; top:130px; font-size: 2rem; color:#f9d342; line-height: 2rem; text-align:right;">
     🐝 <br>
-    ⬒<br>
-    &nbsp;&nbsp;⬒<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;⬒<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬒<br>
+    ⋯<br>
+    &nbsp;&nbsp;⋯<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;⋯<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⋯<br>
     🐝
 </div>
 """, unsafe_allow_html=True)
