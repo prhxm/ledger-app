@@ -33,10 +33,13 @@ body::before {
     z-index: 0;
 }
 
-/* 🔸 Make sure content stays visible */
-.login-container, .stApp {
+/* 🔸 Ensure main content stays above */
+html, body, [class*="css"], .stApp, .login-container {
     position: relative;
     z-index: 1;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    color: #f9d342;
+    background-color: #111111;
 }
 </style>
 """, unsafe_allow_html=True)
