@@ -92,6 +92,7 @@ def simple_login():
             if result.get("error") is None:
                 st.session_state.user = result.data[0]
                 st.success(f"You Just Joined Us, {username} 🫶")
+                st.rerun()
             else:
                 st.error("Failed to Register... ❌")
           
