@@ -14,14 +14,6 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ✅ Custom page config
-st.set_page_config(
-    page_title="prhx - Simple Ledger App",
-    page_icon="🐝",
-    layout="centered",
-    initial_sidebar_state="collapsed"
-)
-
 # ✅ Styling
 st.markdown("""
 <style>
