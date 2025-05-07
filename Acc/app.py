@@ -65,11 +65,28 @@ def run_ledger_app():
         ])
 
     accounts = [
-        "Cash", "Accounts Receivable", "Inventory", "Equipment",
-        "Accounts Payable", "Unearned Revenue", "Common Stock", "Retained Earnings",
-        "Sales Revenue", "Rent Expense", "Utilities Expense", "Dividends"
+        # Assets
+        "Cash", "Bank", "Accounts Receivable", "Inventory", "Prepaid Expenses",
+        "Equipment", "Buildings", "Land", "Vehicles", "Investments", "Accumulated Depreciation",
+    
+        # Liabilities
+        "Accounts Payable", "Salaries Payable", "Taxes Payable", "Unearned Revenue",
+        "Interest Payable", "Loans Payable", "Bonds Payable",
+    
+        # Equity
+        "Common Stock", "Preferred Stock", "Retained Earnings", "Dividends",
+        "Treasury Stock", "Additional Paid-In Capital",
+    
+        # Revenues
+        "Sales Revenue", "Service Revenue", "Interest Revenue", "Rental Revenue", "Gain on Sale of Assets",
+    
+        # Expenses
+        "Rent Expense", "Utilities Expense", "Salaries Expense", "Depreciation Expense",
+        "Advertising Expense", "Supplies Expense", "Interest Expense", "Insurance Expense",
+        "Cost of Goods Sold"
     ]
-    txn_types = ["Paid", "Received"]
+
+    txn_types = ["Reduced (-)", "Increased (+)"]
     
 
     # ========== Form for Data Entry ==========
@@ -87,11 +104,35 @@ def run_ledger_app():
 
     if submitted:
         debit, credit = 0, 0
-        if txn_type == "Paid":
-            debit = 0 if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends", "Accounts Receivable"] else amount
+        if txn_type == "Reduced (-)":
+            debit = 0 if account in  [
+    # Assets
+    "Cash", "Bank", "Accounts Receivable", "Inventory", "Prepaid Expenses",
+    "Equipment", "Buildings", "Land", "Vehicles", "Investments",
+
+    # Expenses
+    "Rent Expense", "Utilities Expense", "Salaries Expense", "Depreciation Expense",
+    "Advertising Expense", "Supplies Expense", "Interest Expense", "Insurance Expense",
+    "Cost of Goods Sold",
+
+    # Equity (Drawings)
+    "Dividends", "Treasury Stock"
+] else amount
             credit = amount if debit == 0 else 0
         else:
-            debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends", "Accounts Receivable"] else 0
+            debit = amount if account in [ 
+    # Assets
+    "Cash", "Bank", "Accounts Receivable", "Inventory", "Prepaid Expenses",
+    "Equipment", "Buildings", "Land", "Vehicles", "Investments",
+
+    # Expenses
+    "Rent Expense", "Utilities Expense", "Salaries Expense", "Depreciation Expense",
+    "Advertising Expense", "Supplies Expense", "Interest Expense", "Insurance Expense",
+    "Cost of Goods Sold",
+
+    # Equity (Drawings)
+    "Dividends", "Treasury Stock"
+] else 0
             credit = 0 if debit else amount
 
         data = {
