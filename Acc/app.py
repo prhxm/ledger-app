@@ -48,11 +48,16 @@ button[kind="primary"] {
 st.markdown("<div style='text-align:center; font-size: 3rem;'>🐝 &nbsp; 🐝</div>", unsafe_allow_html=True)
 st.markdown("<div style='text-align:right; color:#f9d342; font-size: 1.1rem; font-style: italic;'>Stay sharp, stay curious — your balance begins here. 🐝</div>", unsafe_allow_html=True)
 st.markdown("""
-<div style="position:absolute; left:10px; top:100px; font-size: 2rem; color:#f9d342;">
-🐝
-<br>⬒<br>⬒<br>⬒<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐝
+<div style="position:absolute; left:30px; top:130px; font-size: 2rem; color:#f9d342; line-height: 2rem;">
+    🐝 <br>
+    ⬒<br>
+    &nbsp;&nbsp;⬒<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;⬒<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⬒<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🐝
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
