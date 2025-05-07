@@ -105,16 +105,7 @@ users = load_users()
 # ✅ Login form
 def simple_login():
     st.title("Easily Reach 🪄")
-
-    # ✅
-    st.markdown(
-        """
-        <div class="login-container">
-            <div class="login-form">
-        """,
-        unsafe_allow_html=True
-    )
-
+    
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
