@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # ✅ Background honeycomb image (faint)
-sst.markdown("""
+st.markdown("""
 <style>
 /* 💡 Faint honeycomb background */
 body::before {
