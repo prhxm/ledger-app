@@ -96,6 +96,7 @@ def simple_login():
             else:
                 st.error("Failed to Register... ❌")
           
+
 # ===================== Ledger App =====================
 def run_ledger_app():
     st.title("Simple Ledger App 📒")
@@ -107,11 +108,28 @@ def run_ledger_app():
         ])
 
     accounts = [
-        "Cash", "Accounts Receivable", "Inventory", "Equipment",
-        "Accounts Payable", "Unearned Revenue", "Common Stock", "Retained Earnings",
-        "Sales Revenue", "Rent Expense", "Utilities Expense", "Dividends"
+        # Assets
+        "Cash", "Bank", "Accounts Receivable", "Inventory", "Prepaid Expenses",
+        "Equipment", "Buildings", "Land", "Vehicles", "Investments", "Accumulated Depreciation",
+    
+        # Liabilities
+        "Accounts Payable", "Salaries Payable", "Taxes Payable", "Unearned Revenue",
+        "Interest Payable", "Loans Payable", "Bonds Payable",
+    
+        # Equity
+        "Common Stock", "Preferred Stock", "Retained Earnings", "Dividends",
+        "Treasury Stock", "Additional Paid-In Capital",
+    
+        # Revenues
+        "Sales Revenue", "Service Revenue", "Interest Revenue", "Rental Revenue", "Gain on Sale of Assets",
+    
+        # Expenses
+        "Rent Expense", "Utilities Expense", "Salaries Expense", "Depreciation Expense",
+        "Advertising Expense", "Supplies Expense", "Interest Expense", "Insurance Expense",
+        "Cost of Goods Sold"
     ]
-    txn_types = ["Paid", "Received"]
+
+    txn_types = ["Reduced (-)", "Increased (+)"]
     
 
     # ========== Form for Data Entry ==========
@@ -119,7 +137,7 @@ def run_ledger_app():
         col1, col2 = st.columns(2)
         with col1:
             account = st.selectbox("Account", accounts)
-            amount = st.number_input("Amount", min_value=0.0, format="%.2f")
+            amount = st.number_input("Amount", min_value=0.0, format="%.2f", key="amount_input", step= 1.0)
             txn_type = st.selectbox("Transaction Type", txn_types)
         with col2:
             date = st.date_input("Date")
@@ -129,11 +147,35 @@ def run_ledger_app():
 
     if submitted:
         debit, credit = 0, 0
-        if txn_type == "Paid":
-            debit = 0 if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends", "Accounts Receivable"] else amount
+        if txn_type == "Reduced (-)":
+            debit = 0 if account in  [
+    # Assets
+    "Cash", "Bank", "Accounts Receivable", "Inventory", "Prepaid Expenses",
+    "Equipment", "Buildings", "Land", "Vehicles", "Investments",
+
+    # Expenses
+    "Rent Expense", "Utilities Expense", "Salaries Expense", "Depreciation Expense",
+    "Advertising Expense", "Supplies Expense", "Interest Expense", "Insurance Expense",
+    "Cost of Goods Sold",
+
+    # Equity (Drawings)
+    "Dividends", "Treasury Stock"
+] else amount
             credit = amount if debit == 0 else 0
         else:
-            debit = amount if account in ["Cash", "Inventory", "Equipment", "Rent Expense", "Utilities Expense", "Dividends", "Accounts Receivable"] else 0
+            debit = amount if account in [ 
+    # Assets
+    "Cash", "Bank", "Accounts Receivable", "Inventory", "Prepaid Expenses",
+    "Equipment", "Buildings", "Land", "Vehicles", "Investments",
+
+    # Expenses
+    "Rent Expense", "Utilities Expense", "Salaries Expense", "Depreciation Expense",
+    "Advertising Expense", "Supplies Expense", "Interest Expense", "Insurance Expense",
+    "Cost of Goods Sold",
+
+    # Equity (Drawings)
+    "Dividends", "Treasury Stock"
+] else 0
             credit = 0 if debit else amount
 
         data = {
@@ -164,7 +206,7 @@ def run_ledger_app():
     try:
         response = supabase.table("transactions") \
             .select("*") \
-            .eq("user_id", st.session_state.user.user.id) \
+            .eq("user_id", st.session_state.user["id"]) \
             .execute()
     except:
         response = None
@@ -172,7 +214,8 @@ def run_ledger_app():
     if response and response.data:
         df = pd.DataFrame(response.data)
         st.subheader("General Ledger 📊")
-        st.dataframe(df)
+        columns_to_display = [col for col in df.columns if col not in ["id", "user_id"]]
+        st.dataframe(df[columns_to_display])
 
         # ========== Trial Balance ==========
         st.subheader("📏 Trial Balance")
