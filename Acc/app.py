@@ -13,17 +13,34 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="collapsed"
 )
+
+# ✅ Background honeycomb image (faint)
+st.markdown("""
+<style>
+body::before {
+    content: "";
+    background: url('https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png') no-repeat right 120px;
+    background-size: 400px;
+    opacity: 0.05;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # ✅ Styling
 st.markdown("""
 <style>
-/* 🐝 Font and colors */
 html, body, [class*="css"] {
     font-family: "Comic Sans MS", cursive, sans-serif;
     color: #f9d342;
     background-color: #111111;
 }
-
-/* 🐝 Inputs & Buttons */
 input, textarea, select {
     background-color: #222 !important;
     color: #f9d342 !important;
@@ -36,15 +53,11 @@ button[kind="primary"] {
     border-radius: 10px;
     font-weight: bold;
 }
-
-/* 🐝 Titles */
 .stTitle {
     font-size: 2.5rem;
     color: #f9d342;
     font-weight: bold;
 }
-
-/* 🐝 Layout */
 .login-container {
     display: flex;
     flex-direction: row;
@@ -72,19 +85,19 @@ button[kind="primary"] {
 st.markdown("<div style='text-align:center; font-size: 3rem;'>🐝 &nbsp; 🐝</div>", unsafe_allow_html=True)
 st.markdown("<div style='text-align:right; color:#f9d342; font-size: 1.1rem; font-style: italic;'>Stay sharp, stay curious — your balance begins here. 🐝</div>", unsafe_allow_html=True)
 
-# Main layout container
+# ✅ Layout container start
 st.markdown("""
 <div class="login-container">
     <div class="login-form">
 """, unsafe_allow_html=True)
 
-# Load environment variables
+# ✅ Supabase setup
 load_dotenv()
 url = os.getenv("SUPABASE_URL")
 key = os.getenv("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
-# ===================== Authentication =====================
+# ✅ Auth helpers
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
@@ -94,6 +107,7 @@ def load_users():
 
 users = load_users()
 
+# ✅ Login form
 def simple_login():
     st.title("Easily Reach 🪄")
 
@@ -147,15 +161,16 @@ def simple_login():
                 st.rerun()
             else:
                 st.error("Failed to Register... ❌")
-# ✅ Close container + image
+
+# ✅ Close HTML wrapper (اگه خواستی جدا استفاده کنی)
 st.markdown("""
     </div> <!-- close login-form -->
     <div class="honeycomb-img">
-        <img src="assets/honeycomb.png">
+        <img src="https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png">
     </div>
 </div> <!-- close login-container -->
 """, unsafe_allow_html=True)
-          
+
 # ===================== Ledger App =====================
 def run_ledger_app():
     st.title("Simple Ledger App 📒")
