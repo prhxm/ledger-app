@@ -15,16 +15,16 @@ st.set_page_config(
 )
 
 # ✅ Background honeycomb image (faint)
-st.markdown("""
+sst.markdown("""
 <style>
-/* ✅ Faint Background */
+/* 💡 Faint honeycomb background */
 body::before {
     content: "";
     background-image: url('https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 300px;
-    opacity: 0.03;
+    opacity: 0.035;
     position: fixed;
     top: 0;
     left: 0;
@@ -33,54 +33,17 @@ body::before {
     z-index: 0;
 }
 
-/* ✅ Content Stays Above */
-html, body, .stApp, [class*="css"], .login-container {
+/* ✅ Keep app content above it */
+.stApp {
     position: relative;
     z-index: 1;
+}
+
+/* Optional: set fonts and colors */
+html, body {
     font-family: "Comic Sans MS", cursive, sans-serif;
     color: #f9d342;
     background-color: #111111;
-}
-
-/* ✅ Inputs & Buttons */
-input, textarea, select {
-    background-color: #222 !important;
-    color: #f9d342 !important;
-    border: 1px solid #f9d342 !important;
-    border-radius: 10px;
-}
-button[kind="primary"] {
-    background-color: #f9d342 !important;
-    color: #000 !important;
-    border-radius: 10px;
-    font-weight: bold;
-}
-
-/* ✅ Title & Layout */
-.stTitle {
-    font-size: 2.5rem;
-    color: #f9d342;
-    font-weight: bold;
-}
-.login-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    margin-top: 2rem;
-}
-.login-form {
-    flex: 1;
-    min-width: 300px;
-}
-.honeycomb-img {
-    flex: 1;
-    text-align: right;
-}
-.honeycomb-img img {
-    width: 320px;
-    max-width: 100%;
 }
 </style>
 """, unsafe_allow_html=True)
