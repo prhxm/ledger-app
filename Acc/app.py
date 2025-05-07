@@ -171,7 +171,8 @@ def run_ledger_app():
     if response and response.data:
         df = pd.DataFrame(response.data)
         st.subheader("General Ledger 📊")
-        st.dataframe(df)
+        columns_to_display = [col for col in df.columns if col not in ["id", "user_id"]]
+        st.dataframe(df[columns_to_display])
 
         # ========== Trial Balance ==========
         st.subheader("📏 Trial Balance")
