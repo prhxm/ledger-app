@@ -63,7 +63,7 @@ def load_users():
 users = load_users()
 
 def simple_login():
-    st.title("Easily Reach 🔐🪄")
+    st.title("Easily Reach 🪄")
 
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
@@ -263,7 +263,7 @@ def run_ledger_app():
 
 # ===================== Run App =====================
 if "user" in st.session_state:
-    st.success(f"You Logged in {st.session_state.user['username']} 🔓☕")
+    st.success(f"You Logged in {st.session_state.user['username']} ☕")
     run_ledger_app()
 else:
     st.warning("Please log in to continue. 🧑‍💻")
