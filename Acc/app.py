@@ -13,6 +13,7 @@ st.set_page_config(
     layout="centered",
     initial_sidebar_state="collapsed"
 )
+# ✅ Styling
 st.markdown("""
 <style>
 /* 🐝 Font and colors */
@@ -48,8 +49,9 @@ button[kind="primary"] {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: wrap;
+    margin-top: 2rem;
 }
 .login-form {
     flex: 1;
@@ -57,7 +59,7 @@ button[kind="primary"] {
 }
 .honeycomb-img {
     flex: 1;
-    text-align: center;
+    text-align: right;
 }
 .honeycomb-img img {
     width: 320px;
@@ -66,7 +68,7 @@ button[kind="primary"] {
 </style>
 """, unsafe_allow_html=True)
 
-# Emojis and motivational message
+# ✅ UI Header
 st.markdown("<div style='text-align:center; font-size: 3rem;'>🐝 &nbsp; 🐝</div>", unsafe_allow_html=True)
 st.markdown("<div style='text-align:right; color:#f9d342; font-size: 1.1rem; font-style: italic;'>Stay sharp, stay curious — your balance begins here. 🐝</div>", unsafe_allow_html=True)
 
@@ -145,7 +147,14 @@ def simple_login():
                 st.rerun()
             else:
                 st.error("Failed to Register... ❌")
-
+# ✅ Close container + image
+st.markdown("""
+    </div> <!-- close login-form -->
+    <div class="honeycomb-img">
+        <img src="assets/honeycomb.png">
+    </div>
+</div> <!-- close login-container -->
+""", unsafe_allow_html=True)
           
 # ===================== Ledger App =====================
 def run_ledger_app():
