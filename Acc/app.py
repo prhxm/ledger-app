@@ -109,18 +109,7 @@ def simple_login():
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
-    # ✅ login-form 
-    st.markdown(
-        """
-            </div>
-            <div class="honeycomb-img">
-                <img src="https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png">
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
+    st.markdown("</div>", unsafe_allow_html=True)
     # ✅ 
     if st.button("Login / Register"):
         if not username or not password:
