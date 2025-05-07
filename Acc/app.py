@@ -14,32 +14,15 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ✅ Background and custom styling
+# ✅ Clean styling without background image
 st.markdown("""
 <style>
-/* Background honeycomb image faint */
-body::before {
-    content: "";
-    background-image: url('https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 300px;
-    opacity: 0.03;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 0;
-}
-
-/* Content stays above background */
-html, body, .stApp, .login-container {
-    position: relative;
-    z-index: 1;
+html, body, .stApp {
     font-family: "Comic Sans MS", cursive, sans-serif;
     color: #f9d342;
     background-color: #111111;
+    position: relative;
+    z-index: 1;
 }
 
 input, textarea, select {
@@ -142,7 +125,7 @@ def simple_login():
                 st.success(f"Welcome {username} 👍")
                 st.rerun()
             else:
-                st.error("Incorrect Password. 🗑️")
+                st.error("Incorrect Password. 🖐️")
         else:
             new_user = {"username": username, "password": hash_password(password)}
             try:
@@ -153,7 +136,7 @@ def simple_login():
                 return
             if result.get("error") is None:
                 st.session_state.user = result.data[0]
-                st.success(f"You Just Joined Us, {username} 🫦")
+                st.success(f"You Just Joined Us, {username} 🫶")
                 st.rerun()
             else:
                 st.error("Failed to Register... ❌")
@@ -326,4 +309,7 @@ def run_ledger_app():
 if "user" not in st.session_state:
     simple_login()
 else:
-    run_ledger_app()
+    st.success(f"You Logged in {st.session_state.user['username']} 🔓☕")
+    # Placeholder for app main
+    st.write("This is your dashboard. Welcome!")
+
