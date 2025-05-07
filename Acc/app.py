@@ -45,16 +45,14 @@ def simple_login():
             new_user = {"username": username, "password": hash_password(password)}
             try:
                 result = supabase.table("users").insert(new_user).execute()
-                st.write("📄 Insert Result:", result)
-        
-                if result.get("error") is None:
-                    st.session_state.user = result.data[0]
-                    st.success(f"You Just Joined Us, {username} 🫶")
-                else:
-                    st.error("Failed to Register... ❌")
+                st.write("🧾 Insert Result:", result)
             except Exception as e:
                 st.error(f"Insert failed: {e}")
-
+            if result.get("error") is None:
+                st.session_state.user = result.data[0]
+                st.success(f"You Just Joined Us, {username} 🫶")
+            else:
+                st.error("Failed to Register... ❌")
           
 # ===================== Ledger App =====================
 def run_ledger_app():
