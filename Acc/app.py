@@ -18,8 +18,8 @@ st.markdown("""
 /* 🐝 Font and colors */
 html, body, [class*="css"] {
     font-family: "Comic Sans MS", cursive, sans-serif;
-    color: #f9d342; /* Yellow text */
-    background-color: #111111; /* Dark background */
+    color: #f9d342;
+    background-color: #111111;
 }
 
 /* 🐝 Inputs & Buttons */
@@ -42,51 +42,39 @@ button[kind="primary"] {
     color: #f9d342;
     font-weight: bold;
 }
+
+/* 🐝 Layout */
+.login-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.login-form {
+    flex: 1;
+    min-width: 300px;
+}
+.honeycomb-img {
+    flex: 1;
+    text-align: center;
+}
+.honeycomb-img img {
+    width: 320px;
+    max-width: 100%;
+}
 </style>
 """, unsafe_allow_html=True)
 
+# Emojis and motivational message
 st.markdown("<div style='text-align:center; font-size: 3rem;'>🐝 &nbsp; 🐝</div>", unsafe_allow_html=True)
 st.markdown("<div style='text-align:right; color:#f9d342; font-size: 1.1rem; font-style: italic;'>Stay sharp, stay curious — your balance begins here. 🐝</div>", unsafe_allow_html=True)
+
+# Main layout container
 st.markdown("""
-<div style="position:absolute; right:30px; top:130px; font-size: 2rem; color:#f9d342; line-height: 2rem; text-align:right;">
-    🐝 <br><br><br><br><br>
-    🐝
-</div>
+<div class="login-container">
+    <div class="login-form">
 """, unsafe_allow_html=True)
-    <div class="login-container">
-        <div class="login-form">
-
-st.markdown(
-    """
-    <style>
-    .login-container {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-    .login-form {
-        flex: 1;
-        min-width: 300px;
-    }
-    .honeycomb-img {
-        flex: 1;
-        text-align: center;
-    }
-    .honeycomb-img img {
-        width: 320px;
-        max-width: 100%;
-    }
-    </style>
-
-    <div class="login-container">
-        <div class="login-form">
-    """,
-    unsafe_allow_html=True
-)
-
-
 
 # Load environment variables
 load_dotenv()
@@ -107,21 +95,29 @@ users = load_users()
 def simple_login():
     st.title("Easily Reach 🪄")
 
+    st.markdown(
+        """
+        <div class="login-container">
+            <div class="login-form">
+        """,
+        unsafe_allow_html=True
+    )
+
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
-    if st.button("Login / Register"):
-        st.markdown(
-    """
+    st.markdown(
+        """
+            </div>
+            <div class="honeycomb-img">
+                <img src="assets/honeycomb.png">
+            </div>
         </div>
-        <div class="honeycomb-img">
-            <img src="assets/honeycomb.png">
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+        """,
+        unsafe_allow_html=True
+    )
 
+    if st.button("Login / Register"):
         if not username or not password:
             st.warning("Please Enter Both Username and Password. 🌱")
             return
@@ -142,9 +138,11 @@ def simple_login():
                 st.write("🧾 Insert Result:", result)
             except Exception as e:
                 st.error(f"Insert failed: {e}")
+                return
             if result.get("error") is None:
                 st.session_state.user = result.data[0]
                 st.success(f"You Just Joined Us, {username} 🫶")
+                st.rerun()
             else:
                 st.error("Failed to Register... ❌")
 
