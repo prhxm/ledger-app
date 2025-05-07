@@ -110,7 +110,7 @@ def simple_login():
         """
             </div>
             <div class="honeycomb-img">
-                <img src="assets/honeycomb.png">
+                <img src="https://raw.githubusercontent.com/prhxm/ledger-app/main/assets/honeycomb.png">
             </div>
         </div>
         """,
